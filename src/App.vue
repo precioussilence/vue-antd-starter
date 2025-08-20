@@ -11,9 +11,11 @@ const layout = computed(() => {
 <template>
   <a-config-provider>
     <a-app>
-      <component :is="layout">
-        <router-view />
-      </component>
+      <transition name="fade" mode="out-in">
+        <component :is="layout">
+          <router-view />
+        </component>
+      </transition>
     </a-app>
   </a-config-provider>
 </template>
