@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@ant-design/icons-vue':
+        specifier: ^7.0.1
+        version: 7.0.1(vue@3.5.18(typescript@5.8.3))
       '@unocss/reset':
         specifier: ^66.4.2
         version: 66.4.2

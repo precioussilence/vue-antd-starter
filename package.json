@@ -16,6 +16,7 @@
     "lint:fix": "eslint --fix"
   },
   "dependencies": {
+    "@ant-design/icons-vue": "^7.0.1",
     "@unocss/reset": "^66.4.2",
     "@vueuse/core": "^13.7.0",
     "ant-design-vue": "4.x",
