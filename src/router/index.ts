@@ -13,13 +13,13 @@ const router = createRouter({
       path: '/login',
       name: 'Login',
       component: () => import('@/views/Login.vue'),
-      meta: { layout: 'auth' },
+      meta: { layout: 'auth', title: '登录', icon: 'i-mdi-login' },
     },
     {
       path: '/register',
       name: 'Register',
       component: () => import('@/views/Register.vue'),
-      meta: { layout: 'auth' },
+      meta: { layout: 'auth', title: '注册', icon: 'i-mdi-account-plus' },
     },
     {
       path: '/unauthorized',
@@ -31,7 +31,7 @@ const router = createRouter({
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
       component: () => import('@/views/404.vue'),
-      meta: { layout: 'auth' },
+      meta: { layout: 'auth', title: '页面未找到', icon: 'i-carbon-warning-alt' },
     },
 
   ],

@@ -38,16 +38,16 @@ const collapsed = ref<boolean>(false)
         <a-layout-header style="background: #fff; padding: 0" class="flex items-center">
           <MenuUnfoldOutlined
             v-if="collapsed"
-            class="font-size-4 line-height-16 p-inline-4 p-block-0 cursor-pointer transition-color duration-300"
+            class="font-size-6 line-height-16 m-inline-4 p-block-0 cursor-pointer transition-color duration-300"
             @click="() => (collapsed = !collapsed)"
           />
           <MenuFoldOutlined
             v-else
-            class="font-size-4 line-height-16 p-inline-4 p-block-0 cursor-pointer transition-color duration-300"
+            class="font-size-6 line-height-16 m-inline-4 p-block-0 cursor-pointer transition-color duration-300"
             @click="() => (collapsed = !collapsed)"
           />
           <a-divider type="vertical" class="h-4 " />
-          <Header class="pl-4" />
+          <Header />
         </a-layout-header>
         <a-layout-content
           :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }"
