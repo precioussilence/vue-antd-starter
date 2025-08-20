@@ -16,4 +16,5 @@ export interface SignupRequest {
   confirmPassword?: string
   email?: string
   phone?: string
+  captcha?: string
 }
