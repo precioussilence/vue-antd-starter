@@ -33,7 +33,12 @@ const router = createRouter({
       component: () => import('@/views/404.vue'),
       meta: { layout: 'main', title: '页面未找到', icon: 'i-carbon-warning-alt' },
     },
-
+    {
+      path: '/system/user',
+      name: 'SystemUser',
+      component: () => import('@/views/User.vue'),
+      meta: { layout: 'main', title: '用户管理' },
+    },
   ],
 })
 
