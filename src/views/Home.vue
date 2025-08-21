@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { App } from 'ant-design-vue'
 
+defineOptions({
+  name: 'Home',
+})
+
 const { message, modal, notification } = App.useApp()
 function showMessage() {
   message.success('Success!')

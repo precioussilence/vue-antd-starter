@@ -25,13 +25,13 @@ const router = createRouter({
       path: '/unauthorized',
       name: 'Unauthorized',
       component: () => import('@/views/403.vue'),
-      meta: { layout: 'auth', title: '无权限' },
+      meta: { layout: 'main', title: '无权限' },
     },
     {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
       component: () => import('@/views/404.vue'),
-      meta: { layout: 'auth', title: '页面未找到', icon: 'i-carbon-warning-alt' },
+      meta: { layout: 'main', title: '页面未找到', icon: 'i-carbon-warning-alt' },
     },
 
   ],

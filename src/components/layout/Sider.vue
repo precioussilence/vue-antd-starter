@@ -61,6 +61,7 @@ const items = reactive([
         key: '8',
         label: 'Option 8',
         title: 'Option 8',
+        path: '/unauthorized',
       },
     ],
   },

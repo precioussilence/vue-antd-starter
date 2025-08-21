@@ -13,9 +13,9 @@ const layout = computed(() => {
     <a-app>
       <component :is="layout">
         <router-view v-slot="{ Component }">
-          <transition name="fade" mode="out-in">
-            <keep-alive include="Home">
-              <component :is="Component" />
+          <transition name="fade">
+            <keep-alive include="Home,Unauthorized,NotFound">
+              <component :is="Component" :key="$route.fullPath" />
             </keep-alive>
           </transition>
         </router-view>
