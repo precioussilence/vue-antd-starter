@@ -1,13 +1,84 @@
 <script setup lang="ts">
-import {
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from '@ant-design/icons-vue'
+import type { MenuProps } from 'ant-design-vue'
+import { App } from 'ant-design-vue'
 import { useSiderCollapsedStore } from '@/stores/global'
 
 const { siderCollapsed } = storeToRefs(useSiderCollapsedStore())
-const selectedKeys = ref<string[]>(['1'])
+
+const state = reactive({
+  selectedKeys: ['1'],
+  openKeys: ['sub1'],
+})
+const items = reactive([
+  {
+    key: '1',
+    icon: h('i', { class: 'i-carbon-home', style: 'font-size: 18px;' }),
+    label: '首页',
+    title: '首页',
+    path: '/',
+  },
+  {
+    key: '2',
+    icon: () => h('i', { class: 'i-carbon-settings', style: 'font-size: 18px;' }),
+    label: 'Option 2',
+    title: 'Option 2',
+  },
+  {
+    key: '3',
+    icon: () => h('i', { class: 'i-carbon-settings', style: 'font-size: 18px;' }),
+    label: 'Option 3',
+    title: 'Option 3',
+  },
+  {
+    key: 'sub1',
+    icon: () => h('i', { class: 'i-carbon-settings', style: 'font-size: 18px;' }),
+    label: '系统管理',
+    title: '系统管理',
+    path: '/system',
+    children: [
+      {
+        key: '5',
+        icon: () => h('i', { class: 'i-carbon-user', style: 'font-size: 18px;' }),
+        label: '用户管理',
+        title: '用户管理',
+        path: '/system/user',
+      },
+      {
+        key: '6',
+        icon: () => h('i', { class: 'i-carbon-user-role', style: 'font-size: 18px;' }),
+        label: '角色管理',
+        title: '角色管理',
+        path: '/system/role',
+      },
+      {
+        key: '7',
+        icon: () => h('i', { class: 'i-carbon-menu', style: 'font-size: 18px;' }),
+        label: '菜单管理',
+        title: '菜单管理',
+        path: '/system/menu',
+      },
+      {
+        key: '8',
+        label: 'Option 8',
+        title: 'Option 8',
+      },
+    ],
+  },
+])
+
+const router = useRouter()
+const { message } = App.useApp()
+
+const handleClick: MenuProps['onClick'] = (e) => {
+  const { path } = e.item
+  if (path) {
+    router.push(path)
+  }
+  else {
+    console.warn('No path found for clicked menu item:', e)
+    message.warning('当前菜单项未配置路由！')
+  }
+}
 </script>
 
 <template>
@@ -22,20 +93,14 @@ const selectedKeys = ref<string[]>(['1'])
       </h3>
     </div>
     <div>
-      <a-menu v-model:selected-keys="selectedKeys" theme="dark" mode="inline">
-        <a-menu-item key="1">
-          <UserOutlined />
-          <span>nav 1</span>
-        </a-menu-item>
-        <a-menu-item key="2">
-          <VideoCameraOutlined />
-          <span>nav 2</span>
-        </a-menu-item>
-        <a-menu-item key="3">
-          <UploadOutlined />
-          <span>nav 3</span>
-        </a-menu-item>
-      </a-menu>
+      <a-menu
+        v-model:open-keys="state.openKeys"
+        v-model:selected-keys="state.selectedKeys"
+        mode="inline"
+        theme="dark"
+        :items="items"
+        @click="handleClick"
+      />
     </div>
   </div>
 </template>
