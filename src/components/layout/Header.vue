@@ -1,5 +1,13 @@
 <script setup lang="ts">
 import type { Breadcrumb } from '@/types/common'
+import { FullscreenExitOutlined, FullscreenOutlined, GithubOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
+import { useFullscreen } from '@vueuse/core'
+import { useSiderCollapsedStore } from '@/stores/global'
+
+const { isFullscreen, toggle } = useFullscreen()
+const siderCollapsedStore = useSiderCollapsedStore()
+const { siderCollapsed } = storeToRefs(siderCollapsedStore)
+const { toggleSiderCollapsed } = siderCollapsedStore
 
 const breadcrumbRoutes = ref<Breadcrumb[]>([])
 
@@ -24,6 +32,17 @@ watch(
 
 <template>
   <div class="flex items-center ml-4 flex-1">
+    <MenuUnfoldOutlined
+      v-if="siderCollapsed"
+      class="font-size-6 line-height-16 m-inline-4 p-block-0 cursor-pointer transition-color duration-300"
+      @click="toggleSiderCollapsed"
+    />
+    <MenuFoldOutlined
+      v-else
+      class="font-size-6 line-height-16 m-inline-4 p-block-0 cursor-pointer transition-color duration-300"
+      @click="toggleSiderCollapsed"
+    />
+    <a-divider type="vertical" class="h-4 " />
     <div>
       <a-breadcrumb :routes="breadcrumbRoutes">
         <template #itemRender="{ route, routes, paths }">
@@ -34,8 +53,11 @@ watch(
         </template>
       </a-breadcrumb>
     </div>
-    <div class="p-inline-4 flex items-center flex-1 justify-end">
+    <div class="p-inline-4 flex items-center flex-1 justify-end gap-4">
       <a-divider type="vertical" class="h-4 mx-2" />
+      <GithubOutlined class="text-5" />
+      <FullscreenOutlined v-if="isFullscreen" @click="toggle" />
+      <FullscreenExitOutlined v-else @click="toggle" />
       <div>
         <a-avatar src="https://www.antdv.com/assets/logo.1ef800a8.svg" />
         <span class="ml-2">Admin</span>

@@ -33,5 +33,6 @@ declare module 'vue' {
     Header: typeof import('./components/layout/Header.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Sider: typeof import('./components/layout/Sider.vue')['default']
   }
 }
