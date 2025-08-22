@@ -1,6 +1,6 @@
 # vue-antd-starter
 
-This template should help get you started developing with Vue 3 in Vite.
+An enhanced Vue 3 + TypeScript + Ant Design Vue starter
 
 ## Recommended IDE Setup
 
