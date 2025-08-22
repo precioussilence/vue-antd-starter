@@ -7,19 +7,19 @@ const router = createRouter({
       path: '/',
       name: 'Home',
       component: () => import('@/views/Home.vue'),
-      meta: { layout: 'main', title: '首页', icon: 'i-carbon-home' },
+      meta: { layout: 'main', title: '首页', key: '1' },
     },
     {
       path: '/login',
       name: 'Login',
       component: () => import('@/views/Login.vue'),
-      meta: { layout: 'auth', title: '登录', icon: 'i-mdi-login' },
+      meta: { layout: 'auth', title: '登录' },
     },
     {
       path: '/register',
       name: 'Register',
       component: () => import('@/views/Register.vue'),
-      meta: { layout: 'auth', title: '注册', icon: 'i-mdi-account-plus' },
+      meta: { layout: 'auth', title: '注册' },
     },
     {
       path: '/unauthorized',
@@ -31,13 +31,13 @@ const router = createRouter({
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
       component: () => import('@/views/404.vue'),
-      meta: { layout: 'main', title: '页面未找到', icon: 'i-carbon-warning-alt' },
+      meta: { layout: 'main', title: '页面未找到' },
     },
     {
       path: '/system/user',
       name: 'SystemUser',
       component: () => import('@/views/User.vue'),
-      meta: { layout: 'main', title: '用户管理' },
+      meta: { layout: 'main', title: '用户管理', key: '1' },
     },
   ],
 })

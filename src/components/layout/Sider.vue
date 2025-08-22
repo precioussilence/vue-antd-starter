@@ -1,85 +1,30 @@
 <script setup lang="ts">
 import type { MenuProps } from 'ant-design-vue'
 import { App } from 'ant-design-vue'
+import { menuItems } from '@/router/routes'
 import { useSiderCollapsedStore } from '@/stores/global'
 
 const { siderCollapsed } = storeToRefs(useSiderCollapsedStore())
 
 const state = reactive({
-  selectedKeys: ['1'],
-  openKeys: ['sub1'],
+  selectedKeys: ['/'],
+  openKeys: ['/system'],
 })
-const items = reactive([
-  {
-    key: '1',
-    icon: h('i', { class: 'i-carbon-home', style: 'font-size: 18px;' }),
-    label: '首页',
-    title: '首页',
-    path: '/',
-  },
-  {
-    key: '2',
-    icon: () => h('i', { class: 'i-carbon-settings', style: 'font-size: 18px;' }),
-    label: 'Option 2',
-    title: 'Option 2',
-  },
-  {
-    key: '3',
-    icon: () => h('i', { class: 'i-carbon-settings', style: 'font-size: 18px;' }),
-    label: 'Option 3',
-    title: 'Option 3',
-  },
-  {
-    key: 'sub1',
-    icon: () => h('i', { class: 'i-carbon-settings', style: 'font-size: 18px;' }),
-    label: '系统管理',
-    title: '系统管理',
-    path: '/system',
-    children: [
-      {
-        key: '5',
-        icon: () => h('i', { class: 'i-carbon-user', style: 'font-size: 18px;' }),
-        label: '用户管理',
-        title: '用户管理',
-        path: '/system/user',
-      },
-      {
-        key: '6',
-        icon: () => h('i', { class: 'i-carbon-user-role', style: 'font-size: 18px;' }),
-        label: '角色管理',
-        title: '角色管理',
-        path: '/system/role',
-      },
-      {
-        key: '7',
-        icon: () => h('i', { class: 'i-carbon-menu', style: 'font-size: 18px;' }),
-        label: '菜单管理',
-        title: '菜单管理',
-        path: '/system/menu',
-      },
-      {
-        key: '8',
-        label: 'Option 8',
-        title: 'Option 8',
-        path: '/unauthorized',
-      },
-    ],
-  },
-])
+const items = reactive(menuItems)
 
 const router = useRouter()
 const { message } = App.useApp()
 
 const handleClick: MenuProps['onClick'] = (e) => {
-  const { path } = e.item
-  if (path) {
-    router.push(path)
-  }
-  else {
-    console.warn('No path found for clicked menu item:', e)
-    message.warning('当前菜单项未配置路由！')
-  }
+  router.push(e.key.toString()).catch((err) => {
+    console.error('route failed,path: ', e.key, ',Reason: ', err)
+    message.error(err.message)
+  })
 }
+
+onMounted(() => {
+  state.selectedKeys = [router.currentRoute.value.fullPath]
+})
 </script>
 
 <template>
