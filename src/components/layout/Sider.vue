@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { MenuProps } from 'ant-design-vue'
+import { useLocalStorage } from '@vueuse/core'
 import { App } from 'ant-design-vue'
 import { menuItems } from '@/router/routes'
 import { useSiderCollapsedStore } from '@/stores/global'
@@ -15,15 +16,32 @@ const items = reactive(menuItems)
 const router = useRouter()
 const { message } = App.useApp()
 
+const lastState = useLocalStorage('lastState', {
+  openKeys: state.openKeys,
+  selectedKeys: state.selectedKeys,
+})
+
 const handleClick: MenuProps['onClick'] = (e) => {
   router.push(e.key.toString()).catch((err) => {
     console.error('route failed,path: ', e.key, ',Reason: ', err)
     message.error(err.message)
   })
+  lastState.value.selectedKeys = [e.key.toString()]
 }
 
+watch(
+  () => state.openKeys,
+  (newVal) => {
+    lastState.value.openKeys = newVal
+  },
+)
 onMounted(() => {
-  state.selectedKeys = [router.currentRoute.value.fullPath]
+  if (lastState.value.selectedKeys) {
+    state.selectedKeys = lastState.value.selectedKeys
+  }
+  else {
+    state.selectedKeys = [router.currentRoute.value.fullPath]
+  }
 })
 </script>
 
