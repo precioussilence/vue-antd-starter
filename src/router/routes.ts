@@ -1,4 +1,5 @@
 import type { MenuItemType, SubMenuType } from 'ant-design-vue/es/menu/src/hooks/useItems'
+import type { RouteRecordSingleView, RouteRecordSingleViewWithChildren } from 'vue-router'
 import type { RouteConfig } from '@/types/common'
 import { AppstoreOutlined, DownloadOutlined, EyeInvisibleOutlined, HomeOutlined, MenuOutlined, SettingOutlined, UserOutlined, UserSwitchOutlined } from '@ant-design/icons-vue'
 
@@ -10,7 +11,7 @@ export const routes: RouteConfig[] = [
     icon: () => h(HomeOutlined),
     path: '/',
     name: 'Home',
-    component: '@/views/Home.vue',
+    component: () => import('@/views/Home.vue'),
     meta: { layout: 'main', title: '首页' },
   },
   {
@@ -28,25 +29,25 @@ export const routes: RouteConfig[] = [
   {
     name: 'Login',
     path: '/login',
-    component: '@/views/Login.vue',
+    component: () => import('@/views/Login.vue'),
     meta: { layout: 'auth', title: '登录' },
   },
   {
     name: 'Register',
     path: '/register',
-    component: '@/views/Register.vue',
+    component: () => import('@/views/Register.vue'),
     meta: { layout: 'auth', title: '注册' },
   },
   {
     name: 'Unauthorized',
     path: '/unauthorized',
-    component: '@/views/403.vue',
+    component: () => import('@/views/403.vue'),
     meta: { layout: 'main', title: '无权限' },
   },
   {
     name: 'NotFound',
     path: '/:pathMatch(.*)*',
-    component: '@/views/404.vue',
+    component: () => import('@/views/404.vue'),
     meta: { layout: 'main', title: '页面未找到' },
   },
   {
@@ -64,6 +65,7 @@ export const routes: RouteConfig[] = [
         icon: () => h(UserOutlined),
         name: 'SyestemUser',
         path: 'user',
+        component: () => import('@/views/system/User.vue'),
       },
       {
         key: '/system/role',
@@ -117,3 +119,25 @@ function convertMenu(config: RouteConfig): MenuItemType | SubMenuType | null {
 }
 
 export const menuItems = routes.map(convertMenu).filter(item => item !== null)
+
+function convertRoute(config: RouteConfig): RouteRecordSingleView | RouteRecordSingleViewWithChildren | null {
+  if (!config.path || !config.name) {
+    return null
+  }
+  if (!config.component && !config.children) {
+    return null
+  }
+  const item = {
+    path: config.path,
+    name: config.name,
+    meta: config.meta,
+    component: config.component ? config.component : undefined,
+  } as RouteRecordSingleView | RouteRecordSingleViewWithChildren
+  item.children = config.children && config.children.some(child => child.path && child.name && (child.component || child.children))
+    ? config.children.map(convertRoute).filter(child => child !== null)
+    : undefined
+
+  return item
+}
+
+export const routeItems = routes.map(convertRoute).filter(item => item !== null)

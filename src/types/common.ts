@@ -7,7 +7,7 @@ export interface RouteConfig {
   icon?: () => VNode
   name?: string
   path?: string
-  component?: string
+  component?: () => Promise<{ default: Component }>
   meta?: {
     layout?: string
     title?: string
