@@ -5,6 +5,7 @@ import type { SearchUserParams, UserListItem } from '@/types/system'
 const activeKey = ref([])
 const formRef = useTemplateRef<FormInstance>('formRef')
 const formState = reactive<SearchUserParams>({})
+const openSaveUserModal = ref(false)
 
 const columns: TableColumnsType = [
   { title: 'id', width: 100, dataIndex: 'id', key: 'id', fixed: 'left' },
@@ -42,9 +43,8 @@ for (let i = 0; i < 100; i++) {
   })
 }
 
-function onFinish(values: any) {
+function onFinish(values: SearchUserParams) {
   console.warn('Received values of form: ', values)
-  console.warn('formState: ', formState)
 }
 </script>
 
@@ -52,7 +52,7 @@ function onFinish(values: any) {
   <div class="h-full flex flex-col overflow-hidden">
     <a-card title="用户列表" class="h-full">
       <template #extra>
-        <a-button type="primary">
+        <a-button type="primary" @click="openSaveUserModal = true">
           添加用户
         </a-button>
       </template>
@@ -146,6 +146,7 @@ function onFinish(values: any) {
         </a-table>
       </a-card>
     </a-card>
+    <user-save-modal v-model:open="openSaveUserModal" />
   </div>
 </template>
 

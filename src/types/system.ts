@@ -22,3 +22,12 @@ export interface UserListItem {
   createTime: string
   updateTime: string
 }
+
+export interface UserSaveRequest {
+  username: string
+  realname: string
+  password: string
+  phone: string
+  email: string
+  depart: string
+}
