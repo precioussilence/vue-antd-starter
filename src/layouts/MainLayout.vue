@@ -10,13 +10,11 @@ const { siderCollapsed } = storeToRefs(useSiderCollapsedStore())
       <a-layout-sider v-model:collapsed="siderCollapsed" :trigger="null" collapsible>
         <Sider />
       </a-layout-sider>
-      <a-layout>
+      <a-layout class="flex flex-col">
         <a-layout-header style="background: #fff; padding: 0">
           <Header />
         </a-layout-header>
-        <a-layout-content
-          :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }"
-        >
+        <a-layout-content class="flex-1">
           <slot />
         </a-layout-content>
         <a-layout-footer style="text-align: center">
