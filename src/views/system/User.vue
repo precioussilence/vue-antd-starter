@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import type { FormInstance, TableColumnsType } from 'ant-design-vue'
 import type { SearchUserParams, UserListItem } from '@/types/system'
+import { delay } from '@/utils/common'
 
 const activeKey = ref([])
 const formRef = useTemplateRef<FormInstance>('formRef')
 const formState = reactive<SearchUserParams>({})
 const openSaveUserModal = ref(false)
+const openModifyUserDrawer = ref(false)
 
 const columns: TableColumnsType = [
   { title: 'id', width: 100, dataIndex: 'id', key: 'id', fixed: 'left' },
@@ -19,16 +21,16 @@ const columns: TableColumnsType = [
   { title: '状态', dataIndex: 'status', key: 'status', width: 150 },
   { title: '创建时间', dataIndex: 'createTime', key: 'createTime' },
   { title: '修改时间', dataIndex: 'updateTime', key: 'updateTime' },
-  { title: '操作', key: 'operation', fixed: 'right', width: 100 },
+  { title: '操作', key: 'operation', fixed: 'right', width: 200 },
 ]
 
-const data: UserListItem[] = []
+const data = ref<UserListItem[]>([])
 for (let i = 0; i < 100; i++) {
   const create = new Date()
   const update = new Date()
   create.setDate(create.getDate() - 100 + i)
   update.setDate(update.getDate() - i)
-  data.push({
+  data.value.push({
     id: i,
     username: `Edrward ${i}`,
     realname: `爱德华 ${i}`,
@@ -46,6 +48,12 @@ for (let i = 0; i < 100; i++) {
 function onFinish(values: SearchUserParams) {
   console.warn('Received values of form: ', values)
 }
+
+async function confirmDelete(id: number) {
+  console.warn('confirm delete params,', id)
+  await delay(1000)
+  data.value = data.value.filter(item => item.id !== id)
+}
 </script>
 
 <template>
@@ -62,6 +70,8 @@ function onFinish(values: SearchUserParams) {
             ref="formRef"
             name="advanced_search"
             :model="formState"
+            :label-col="{ span: 4 }"
+            :wrapper-col="{ span: 20 }"
             @finish="onFinish"
           >
             <a-row :gutter="24">
@@ -138,15 +148,25 @@ function onFinish(values: SearchUserParams) {
       </a-collapse>
       <a-card class="m-block-4">
         <a-table :columns="columns" :data-source="data" :scroll="{ x: 1500, y: 600 }">
-          <template #bodyCell="{ column }">
+          <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'operation'">
-              <a>action</a>
+              <a-space>
+                <a-button type="primary" @click="openModifyUserDrawer = true">
+                  修改
+                </a-button>
+                <a-popconfirm title="确定要删除当前用户吗？" ok-text="确定" cancel-text="取消" @confirm="confirmDelete(record.id)">
+                  <a-button type="primary" danger>
+                    删除
+                  </a-button>
+                </a-popconfirm>
+              </a-space>
             </template>
           </template>
         </a-table>
       </a-card>
     </a-card>
     <user-save-modal v-model:open="openSaveUserModal" />
+    <user-modify-drawer v-model:open="openModifyUserDrawer" />
   </div>
 </template>
 

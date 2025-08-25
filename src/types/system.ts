@@ -23,11 +23,23 @@ export interface UserListItem {
   updateTime: string
 }
 
-export interface UserSaveRequest {
+export interface UserSaveParams {
   username: string
   realname: string
   password: string
   phone: string
   email: string
   depart: string
+}
+
+export interface UserModifyParams {
+  id?: number
+  username?: string
+  realname?: string
+  nickname?: string
+  phone?: string
+  email?: string
+  depart?: string
+  gender?: number
+  status?: number
 }

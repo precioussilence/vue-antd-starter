@@ -1,21 +1,14 @@
 <script setup lang="ts">
 import type { FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
-import type { UserSaveParams } from '@/types/system'
+import type { UserModifyParams } from '@/types/system'
 import { App } from 'ant-design-vue'
 import { delay } from '@/utils/common'
 
 const open = defineModel<boolean>('open')
 
 const formRef = useTemplateRef<FormInstance>('formRef')
-const formState = reactive<UserSaveParams>({
-  username: '',
-  realname: '',
-  password: '',
-  phone: '',
-  email: '',
-  depart: '',
-})
+const formState = reactive<UserModifyParams>({})
 
 const rules: Record<string, Rule[]> = {
   username: [
@@ -35,7 +28,7 @@ const rules: Record<string, Rule[]> = {
 const { message } = App.useApp()
 const loading = ref(false)
 
-async function onFinish(values: UserSaveParams) {
+async function onFinish(values: UserModifyParams) {
   console.warn('Received values of form: ', values)
   loading.value = true
   await delay(5000)
@@ -47,20 +40,22 @@ async function onFinish(values: UserSaveParams) {
 
 <template>
   <div>
-    <a-modal
+    <a-drawer
       v-model:open="open"
-      centered
-      :footer="null"
+      :closable="false"
+      :width="720"
+      :body-style="{ paddingBottom: '80px' }"
+      :footer-style="{ textAlign: 'right' }"
     >
-      <a-card title="新增用户" class="h-full">
+      <a-card title="修改用户" class="h-full">
         <a-form
           ref="formRef"
+          layout="vertical"
           :model="formState"
-          :label-col="{ span: 4 }"
           :rules="rules"
           @finish="onFinish"
         >
-          <a-row :gutter="24">
+          <a-row>
             <a-col :span="24">
               <a-form-item label="用户名" name="username">
                 <a-input v-model:value="formState.username" placeholder="请输入用户名" />
@@ -69,11 +64,6 @@ async function onFinish(values: UserSaveParams) {
             <a-col :span="24">
               <a-form-item label="姓名" name="realname">
                 <a-input v-model:value="formState.realname" placeholder="请输入姓名" />
-              </a-form-item>
-            </a-col>
-            <a-col :span="24">
-              <a-form-item label="初始密码" name="password">
-                <a-input v-model:value="formState.password" placeholder="请输入昵称" />
               </a-form-item>
             </a-col>
             <a-col :span="24">
@@ -104,7 +94,7 @@ async function onFinish(values: UserSaveParams) {
           </a-row>
         </a-form>
       </a-card>
-    </a-modal>
+    </a-drawer>
   </div>
 </template>
 
