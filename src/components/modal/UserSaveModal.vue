@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { FormInstance } from 'ant-design-vue'
 import type { UserSaveRequest } from '@/types/system'
+import { App } from 'ant-design-vue'
+import { delay } from '@/utils/common'
 
 const open = defineModel<boolean>('open')
 
@@ -14,12 +16,16 @@ const formState = reactive<UserSaveRequest>({
   depart: '',
 })
 
-function handleOk() {
-  open.value = false
-}
+const { message } = App.useApp()
+const loading = ref(false)
 
-function onFinish(values: UserSaveRequest) {
+async function onFinish(values: UserSaveRequest) {
   console.warn('Received values of form: ', values)
+  loading.value = true
+  await delay(5000)
+  loading.value = false
+  open.value = false
+  message.success('Success!')
 }
 </script>
 
@@ -28,8 +34,7 @@ function onFinish(values: UserSaveRequest) {
     <a-modal
       v-model:open="open"
       centered
-      :closable="false"
-      @ok="handleOk"
+      :footer="null"
     >
       <a-card title="新增用户" class="h-full">
         <a-form
@@ -67,6 +72,16 @@ function onFinish(values: UserSaveRequest) {
               <a-form-item label="所属部门" name="depart">
                 <a-input v-model:value="formState.depart" placeholder="请输入部门" />
               </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row>
+            <a-col :span="24" style="text-align: right">
+              <a-button type="primary" html-type="submit" :loading="loading">
+                提交
+              </a-button>
+              <a-button style="margin: 0 8px" @click="() => formRef?.resetFields()">
+                清除
+              </a-button>
             </a-col>
           </a-row>
         </a-form>
